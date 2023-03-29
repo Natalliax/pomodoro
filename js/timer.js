@@ -1,11 +1,14 @@
+import { alarm } from "./alarm.js";
+import { chengeActiveBtn } from "./control.js";
 import { state } from "./state.js";
+import { addZero } from "./util.js";
 
 const minutesElem = document.querySelector('.time__minutes');
 const secondsElem = document.querySelector('.time__seconds');
 
-const showTime = (seconds) => {
-minutesElem.textContent = Math.floor(seconds / 60);
-secondsElem.textContent = seconds % 60;
+export const showTime = (seconds) => {
+minutesElem.textContent = addZero(Math.floor(seconds / 60));
+secondsElem.textContent = addZero(seconds % 60);
 }
 
 export const startTimer = () => {
@@ -14,11 +17,30 @@ export const startTimer = () => {
     //отоборазить на странице
     showTime(state.timeLeft);
 
-    if (state.timeLeft > 0) {
-        setTimeout(startTimer, 1000);
+    if (state.timeLeft > 0 && state.isActive) {
+        state.timerId = setTimeout(startTimer, 1000);
     }
 
     if (state.timeLeft <= 0) {
         //сигнализировать что время вышло
+
+        if (state.status === 'work') {
+            state.activeTodo.pomodoro +=1;
+
+        if (state.activeTodo.pomodoro % state.count) {
+        state.status = 'break'
+        } else {
+        state.status = 'relax'
+}
+
+        state.status = 'break'
+        } else {
+            state.status = 'work'
+        }
+
+        alarm();
+        state.timeLeft = state[state.status] * 60;
+        chengeActiveBtn(state.status);
+        startTimer();
     }
 }
