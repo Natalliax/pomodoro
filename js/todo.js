@@ -1,5 +1,7 @@
 import { state } from "./state.js";
 
+
+
 const titleElem = document.querySelector('.title');
 const todoListElem = document.querySelector('.todo__list');
 
@@ -21,14 +23,14 @@ const todo = {
     title,
     pomodoro: 0,
     id: Math.random().toString(16).substring(2,8),
-};
+}
 
 const todoList = getTodo();
     todoList.push(todo);
     localStorage.setItem('pomodoro', JSON.stringify(todoList));
     return todo;
-}
 
+}
 const createTodoListItem = (todo) => {
     
         if (todo.id !== 'default') {
@@ -70,11 +72,11 @@ const renderTodoList = (list) => {
     todoListElem.textContent = '';
     list.forEach(createTodoListItem);
     todoListElem.append('li');
-};
+}
 
 const showTodo = () => {
     titleElem.textContent = state.activeTodo.title;
-};
+}
 
 export const initTodo  = () => {
     const todoList = getTodo();
@@ -82,11 +84,10 @@ export const initTodo  = () => {
     state.activeTodo = [{
     id: 'default',
     pomodoro: 0,
-    title: 'Помодоро',
-}]
-    }else {
+    title: 'Помодоро',}]
+    } else {
     state.activeTodo = todoList[todoList.length - 1];
-}
+
 
 showTodo();
 renderTodoList(todoList);
@@ -97,4 +98,5 @@ renderTodoList(todoList);
     createTodoListItem(todo);
 
 })
+    }
 }
